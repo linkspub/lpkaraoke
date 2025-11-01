@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Remote Input Laporan Karaoke</title>
+<style>
+body { font-family: "Segoe UI", sans-serif; padding: 20px; background: #f8f8fb; }
+h2 { text-align: center; color: #4b2b80; }
+label { font-weight: 600; display: block; margin-top: 10px; }
+input, textarea, button { width: 100%; padding: 8px; margin-top: 3px; margin-bottom: 10px; font-size: 14px; }
+button { background: #5b2c83; color: #fff; border: none; cursor: pointer; }
+button:hover { background: #6f3aa3; }
+</style>
+</head>
+<body>
+<h2>Remote Input Laporan Karaoke</h2>
+
+<form id="inputForm">
+  <label>Tanggal:</label>
+  <input type="date" name="tanggal" required>
+
+  <label>Cash:</label>
+  <input type="text" name="cash" placeholder="Rp..." required>
+
+  <label>Pengeluaran:</label>
+  <textarea name="pengeluaran" placeholder="Tuliskan pengeluaran..."></textarea>
+
+  <label>Keterangan:</label>
+  <textarea name="keterangan" placeholder="Catatan tambahan..."></textarea>
+
+  <button type="submit">Send</button>
+</form>
+
+<script>
+const endpoint = "/.netlify/functions/submit"; // endpoint function
+
+document.getElementById("inputForm").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  const formData = new FormData(this);
+  const data = new URLSearchParams(formData);
+
+  fetch(endpoint, {
+    method: "POST",
+    body: data
+  })
+  .then(res => res.ok ? alert("Data berhasil dikirim!") : alert("Gagal mengirim data"))
+  .catch(err => alert("Error: " + err));
+});
+</script>
+</body>
+</html>
